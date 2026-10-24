@@ -51,6 +51,8 @@ public class Settings {
   public final String OverlayGestureKey;
   public final String OverlayCornerKey;
   public final String OverlaySizeKey;
+  public final String OverlayTransparencyKey;
+  public final String OverlayCamerasKey;
 
 
   private static class Holder {
@@ -100,6 +102,8 @@ public class Settings {
     OverlayGestureKey = res.getString(R.string.overlay_gesture_key);
     OverlayCornerKey = res.getString(R.string.overlay_corner_key);
     OverlaySizeKey = res.getString(R.string.overlay_size_key);
+    OverlayTransparencyKey = res.getString(R.string.overlay_transparency_key);
+    OverlayCamerasKey = res.getString(R.string.overlay_cameras_key);
   }
 
   private boolean getBoolean(String key) {
@@ -248,7 +252,21 @@ public class Settings {
   }
 
   public List<String> getSelectedCameras() {
-    String selectedCameras = getString(SelectedCamerasKey);
+    return getCameraList(SelectedCamerasKey);
+  }
+
+  /** The cameras the "Watch over TV" list offers, or null to follow the grid. */
+  public List<String> getOverlayCameras() {
+    return getCameraList(OverlayCamerasKey);
+  }
+
+  public Settings setOverlayCameras(List<String> cameraNames) {
+    setString(OverlayCamerasKey, String.join(",", cameraNames));
+    return this;
+  }
+
+  private List<String> getCameraList(String key) {
+    String selectedCameras = getString(key);
     if (selectedCameras == null) {
       return null;
     } else if (selectedCameras.length() == 0) { // isEmpty()
@@ -376,5 +394,9 @@ public class Settings {
 
   public OverlayPlacement.Size getOverlaySize() {
     return OverlayPlacement.Size.parse(getString(OverlaySizeKey));
+  }
+
+  public OverlayPlacement.Transparency getOverlayTransparency() {
+    return OverlayPlacement.Transparency.parse(getString(OverlayTransparencyKey));
   }
 }

@@ -31,4 +31,6 @@
     <string name="overlay_gesture_key" translatable="false">overlay_gesture</string>
     <string name="overlay_corner_key" translatable="false">overlay_corner</string>
     <string name="overlay_size_key" translatable="false">overlay_size</string>
+    <string name="overlay_transparency_key" translatable="false">overlay_transparency</string>
+    <string name="overlay_cameras_key" translatable="false">overlay_cameras</string>
 </resources>

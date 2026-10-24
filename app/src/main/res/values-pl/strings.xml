@@ -76,6 +76,14 @@
     <string name="overlay_size_small">Mały</string>
     <string name="overlay_size_medium">Średni</string>
     <string name="overlay_size_large">Duży</string>
+    <string name="overlay_size_huge">Prawie cały ekran</string>
+    <string name="overlay_transparency">Przezroczystość</string>
+    <string name="overlay_transparency_none">Brak</string>
+    <string name="overlay_transparency_low">Niska</string>
+    <string name="overlay_transparency_medium">Średnia</string>
+    <string name="overlay_transparency_high">Wysoka</string>
+    <string name="overlay_cameras">Kamery na liście</string>
+    <string name="overlay_cameras_same_as_grid">Jak w siatce</string>
     <string name="overlay_gesture">Otwieraj przez</string>
     <string name="overlay_gesture_hold">Przytrzymanie przycisku</string>
     <string name="overlay_gesture_double">Dwukrotne naciśnięcie przycisku</string>

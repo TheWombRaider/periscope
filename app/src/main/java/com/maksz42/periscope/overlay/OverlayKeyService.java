@@ -159,11 +159,12 @@ public final class OverlayKeyService extends AccessibilityService {
   @RequiresApi(22)
   private void openChooser() {
     restartTimeout();
-    // The grid's own camera selection and order, when the user has made one; it is read fresh
-    // each time, so changes made in the grid show up at once.
-    // An empty selection is a choice too: the grid then shows "no cameras selected", and so does
-    // the list (still offering to close a camera that is showing).
-    List<String> selected = Settings.getInstance().getSelectedCameras();
+    // The list's own camera selection, or else the grid's, when the user has made one; read
+    // fresh each time, so changes show up at once. An empty selection shows "no cameras
+    // selected" (still offering to close a camera that is showing).
+    Settings settings = Settings.getInstance();
+    List<String> selected = ChooserModel.cameraSource(
+        settings.getOverlayCameras(), settings.getSelectedCameras());
     if (selected != null) {
       showModel(new ChooserModel(selected, camera.camera(), getString(R.string.overlay_close)));
       return;

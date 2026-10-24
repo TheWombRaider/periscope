@@ -1,5 +1,7 @@
 package com.maksz42.periscope.overlay;
 
+import java.util.List;
+
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -96,5 +98,15 @@ public class ChooserModelTest {
     assertEquals(Arrays.asList(CLOSE), m.rows());
     assertTrue(m.closeSelected());
     assertFalse(m.hasCameras());
+  }
+
+  @Test
+  public void theListsOwnSelectionWinsThenTheGridsThenEveryCamera() {
+    List<String> list = Arrays.asList("front_left", "garage");
+    List<String> grid = Arrays.asList("front_left", "master_bedroom");
+    assertEquals(list, ChooserModel.cameraSource(list, grid));
+    assertEquals(grid, ChooserModel.cameraSource(null, grid));
+    assertNull(ChooserModel.cameraSource(null, null));
+    assertEquals(Collections.emptyList(), ChooserModel.cameraSource(Collections.emptyList(), grid));
   }
 }

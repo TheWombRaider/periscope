@@ -9,6 +9,14 @@ import java.util.List;
  * Pure logic.
  */
 final class ChooserModel {
+  /**
+   * Which cameras the list offers: its own selection if the user made one, else the grid's,
+   * else null, meaning every camera on the server. An empty selection is a choice too.
+   */
+  static List<String> cameraSource(List<String> listSelection, List<String> gridSelection) {
+    return listSelection != null ? listSelection : gridSelection;
+  }
+
   private final List<String> rows = new ArrayList<>();
   private final int cameraCount;
   private int index;

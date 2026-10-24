@@ -185,6 +185,11 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
       chooseTriggerKey();
       return true;
     });
+    findPreference(getString(R.string.overlay_cameras_key)).setOnPreferenceClickListener(p -> {
+      startActivity(new Intent(this, CamerasOrderActivity.class)
+          .putExtra(CamerasOrderActivity.EXTRA_OVERLAY_LIST, true));
+      return true;
+    });
     updateOverlaySummaries();
   }
 
@@ -197,6 +202,11 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         : R.string.overlay_status_off);
     findPreference(getString(R.string.overlay_trigger_key_key)).setSummary(
         getString(R.string.overlay_trigger_summary, triggerName(settings.getOverlayTriggerKey())));
+    java.util.List<String> listCameras = settings.getOverlayCameras();
+    findPreference(getString(R.string.overlay_cameras_key)).setSummary(
+        listCameras == null ? getString(R.string.overlay_cameras_same_as_grid)
+            : listCameras.isEmpty() ? getString(R.string.no_cameras_selected)
+            : android.text.TextUtils.join(", ", listCameras));
   }
 
   @RequiresApi(22)

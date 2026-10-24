@@ -107,8 +107,9 @@ final class CameraOverlay {
     Settings settings = Settings.getInstance();
     OverlayPlacement.Corner corner = settings.getOverlayCorner();
     DisplayMetrics dm = context.getResources().getDisplayMetrics();
-    int w = Math.round(Math.max(dm.widthPixels, dm.heightPixels) * settings.getOverlaySize().share);
-    int h = w * 9 / 16;
+    int[] size = settings.getOverlaySize().fit(dm.widthPixels, dm.heightPixels);
+    int w = size[0];
+    int h = size[1];
     window = new FrameLayout(context);
     window.setBackgroundColor(Color.BLACK);
     image = new ImageView(context);
@@ -134,6 +135,7 @@ final class CameraOverlay {
     lp.gravity = (corner.top ? Gravity.TOP : Gravity.BOTTOM) | (corner.right ? Gravity.RIGHT : Gravity.LEFT);
     lp.x = Math.round(dm.widthPixels * 0.03f);
     lp.y = Math.round(dm.heightPixels * 0.05f);
+    lp.alpha = settings.getOverlayTransparency().alpha;
     lp.setTitle("PeriscopeCameraOverlay");
     try {
       windows.addView(window, lp);
