@@ -68,4 +68,20 @@ public class FrameStatusTest {
     s.frame(1_000, 7);
     assertNull(s.error());
   }
+
+  @Test
+  public void waitingForTheFirstPictureIsNotAWarning() {
+    FrameStatus s = new FrameStatus();
+    assertFalse("connecting", s.warning(60_000));
+    s.error("SocketTimeoutException");
+    assertTrue("no picture could be fetched", s.warning(60_000));
+  }
+
+  @Test
+  public void anOldPictureIsAWarning() {
+    FrameStatus s = new FrameStatus();
+    s.frame(10_000, 1);
+    assertFalse(s.warning(10_000 + FrameStatus.STALE_MS));
+    assertTrue(s.warning(10_001 + FrameStatus.STALE_MS));
+  }
 }

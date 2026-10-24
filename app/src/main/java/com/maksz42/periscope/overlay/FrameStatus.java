@@ -52,6 +52,15 @@ final class FrameStatus {
   }
 
   /**
+   * Whether the label should warn: the picture is too old, or no picture could be fetched. A
+   * window still waiting for its first picture is not a warning, so opening a camera doesn't
+   * flash red.
+   */
+  boolean warning(long now) {
+    return hasFrame() ? stale(now) : lastError != null;
+  }
+
+  /**
    * Each window session has a number; a fetch started for an older session must not draw into
    * a newer one or into a closed window.
    */

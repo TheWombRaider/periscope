@@ -80,7 +80,7 @@ final class CameraOverlay {
         label.setText(text);
         shownText = text;
       }
-      int color = status.stale(now) ? 0xC0B00000 : 0x80000000;
+      int color = status.warning(now) ? 0xC0B00000 : 0x80000000;
       if (color != shownColor) {
         label.setBackgroundColor(color);
         shownColor = color;
