@@ -63,6 +63,12 @@ final class CameraOverlay {
   /** What the label shows now, so a tick that changes nothing doesn't redraw the window. */
   private String shownText;
   private int shownColor;
+  /**
+   * The picture on screen, and the one it replaced. A replaced picture is recycled only at the
+   * next replacement, a whole interval later, so the renderer never draws a recycled bitmap.
+   */
+  private Bitmap shown;
+  private Bitmap replaced;
 
   private final Runnable tickLabel = new Runnable() {
     @Override
@@ -184,14 +190,23 @@ final class CameraOverlay {
     long sum = checksum;
     String err = error;
     main.post(() -> {
+      boolean current;
       synchronized (lock) {
-        if (!generation.isCurrent(gen)) return;
+        current = generation.isCurrent(gen);
       }
-      if (window == null) return;
+      if (!current || window == null) {
+        if (frame != null) frame.recycle(); // never shown
+        return;
+      }
       if (frame == null) {
         status.error(err);
-      } else if (status.frame(SystemClock.elapsedRealtime(), sum)) {
+      } else if (!status.frame(SystemClock.elapsedRealtime(), sum)) {
+        frame.recycle(); // the same picture again; the one on screen stays
+      } else {
         image.setImageBitmap(frame);
+        if (replaced != null) replaced.recycle();
+        replaced = shown;
+        shown = frame;
       }
     });
   }
@@ -243,6 +258,15 @@ final class CameraOverlay {
       image = null;
       label = null;
     }
+    Bitmap a = shown;
+    Bitmap b = replaced;
+    shown = null;
+    replaced = null;
+    // After the window's own teardown, which removeView() queued ahead of this.
+    main.post(() -> {
+      if (a != null) a.recycle();
+      if (b != null) b.recycle();
+    });
     camera = null;
   }
 }
