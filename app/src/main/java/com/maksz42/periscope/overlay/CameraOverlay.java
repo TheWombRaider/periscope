@@ -60,14 +60,25 @@ final class CameraOverlay {
   private FrameStatus status;
   private ScheduledExecutorService worker;
   private String camera;
+  /** What the label shows now, so a tick that changes nothing doesn't redraw the window. */
+  private String shownText;
+  private int shownColor;
 
   private final Runnable tickLabel = new Runnable() {
     @Override
     public void run() {
       if (window == null) return;
       long now = SystemClock.elapsedRealtime();
-      label.setText(labelText(now));
-      label.setBackgroundColor(status.stale(now) ? 0xC0B00000 : 0x80000000);
+      String text = labelText(now);
+      if (!text.equals(shownText)) {
+        label.setText(text);
+        shownText = text;
+      }
+      int color = status.stale(now) ? 0xC0B00000 : 0x80000000;
+      if (color != shownColor) {
+        label.setBackgroundColor(color);
+        shownColor = color;
+      }
       main.postDelayed(this, 250);
     }
   };
@@ -126,6 +137,8 @@ final class CameraOverlay {
       camera = null;
       return false;
     }
+    shownText = null;
+    shownColor = 0;
     main.post(tickLabel);
 
     Media media = new Media(name, settings.getImageFormat(), -1, h);
