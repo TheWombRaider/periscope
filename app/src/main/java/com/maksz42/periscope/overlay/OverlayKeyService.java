@@ -263,6 +263,7 @@ public final class OverlayKeyService extends AccessibilityService {
     Intent intent = cameraName != null
         ? new Intent(this, SingleCameraActivity.class).putExtra("camera_name", cameraName)
         : new Intent(this, MatrixActivity.class);
+    intent.putExtra(MatrixActivity.EXTRA_BACK_LEAVES, true);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     try {
       startActivity(intent);
