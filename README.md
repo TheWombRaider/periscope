@@ -1,0 +1,1 @@
+Screenshots for the "Watch a camera over TV" pull request. Taken on the Android 14 TV emulator with a stand-in Frigate serving drawn pictures; the 3D Pipes animation behind is MIT-licensed (github.com/TheWombRaider/pipes-tv).
