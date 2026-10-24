@@ -66,6 +66,7 @@ In Periscope's settings, open **Watch over TV** and choose **Status**: it opens 
 - No Info button, or rather tap twice? Pick another under **Remote button**, and set **Open with** to a hold or a double press. Buttons that would also act on the show (arrows, OK, Back, Home, power, volume, play/pause) can't be chosen.
 - While a camera is showing, the list opens on **Close camera**, so closing it takes the button and OK.
 - The corner, size (up to most of the screen) and transparency are in the same settings. The list follows your camera selection and order, unless you pick its own cameras under **Cameras in the list**, for example to keep a private camera out of it.
+- To look closer, open the list while a camera floats and choose **Full screen** (one up from **Close camera**); with nothing floating, **Open Periscope** opens the grid. Back returns to what was playing.
 - The service only reacts to that button, and to Up, Down, OK and Back while the list is open; it doesn't read the screen.
 - If the accessibility setting is greyed out ("restricted setting"), open Periscope's app info, choose **Allow restricted settings** from the menu, and try again.
 - Some TVs (e.g. TCL) also require allowing autostart for Periscope before the service can run.
