@@ -46,6 +46,8 @@ public class CamerasOrderActivity extends Activity {
     List<String> loadedCameras = overlayList
         ? settings.getOverlayCameras() != null ? settings.getOverlayCameras() : settings.getSelectedCameras()
         : settings.getSelectedCameras();
+    // With no selection at all, the list offers every camera, so the picker starts with all ticked.
+    boolean newOnesTicked = overlayList && loadedCameras == null;
     if (loadedCameras != null) {
       addCameraItems(loadedCameras, true);
     }
@@ -78,7 +80,7 @@ public class CamerasOrderActivity extends Activity {
       while (refreshing) {
         try {
           List<String> cameraNames = config.getCameras();
-          runOnUiThread(() -> addCameraItems(cameraNames, false));
+          runOnUiThread(() -> addCameraItems(cameraNames, newOnesTicked));
           break;
         } catch (Exception e) {
           Log.e(CamerasOrderActivity.this.getClass().getName(), "Error getting cameras", e);
