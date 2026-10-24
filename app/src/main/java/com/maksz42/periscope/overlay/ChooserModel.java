@@ -5,10 +5,24 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The chooser's rows: one per camera, plus a last "close" row when a camera is showing.
- * Pure logic.
+ * The chooser's rows: one per camera, then action rows. While a camera is showing they are
+ * "full screen" and a last "close"; otherwise "open the app". Pure logic.
  */
 final class ChooserModel {
+  /** What choosing the highlighted row does. */
+  enum Choice {
+    /** Show the highlighted camera. */
+    CAMERA,
+    /** Open the camera that is showing full screen in the app. */
+    FULL_SCREEN,
+    /** Close the camera that is showing. */
+    CLOSE,
+    /** Open the app's camera grid. */
+    OPEN_APP,
+    /** Nothing to choose. */
+    NONE
+  }
+
   /**
    * Which cameras the list offers: its own selection if the user made one, else the grid's,
    * else null, meaning every camera on the server. An empty selection is a choice too.
@@ -18,6 +32,7 @@ final class ChooserModel {
   }
 
   private final List<String> rows = new ArrayList<>();
+  private final List<Choice> actions = new ArrayList<>();
   private final int cameraCount;
   private int index;
 
@@ -27,12 +42,32 @@ final class ChooserModel {
    *     on the close row, so closing takes the trigger and OK, and any camera is one step away
    *     because the list wraps
    * @param closeLabel the text of the close row, shown only while watching
+   * @param fullScreenLabel the text of the full screen row, shown only while watching (just
+   *     above close, so it is one Up away); null for none
+   * @param openAppLabel the text of the row that opens the app, shown only while not watching
+   *     (last, so it is one Up away from the first camera); null for none
    */
-  ChooserModel(List<String> cameras, String watching, String closeLabel) {
+  ChooserModel(List<String> cameras, String watching, String closeLabel, String fullScreenLabel,
+               String openAppLabel) {
     rows.addAll(cameras);
     cameraCount = cameras.size();
-    if (watching != null) rows.add(closeLabel);
+    if (watching != null) {
+      if (fullScreenLabel != null) addAction(fullScreenLabel, Choice.FULL_SCREEN);
+      addAction(closeLabel, Choice.CLOSE);
+    } else if (openAppLabel != null) {
+      addAction(openAppLabel, Choice.OPEN_APP);
+    }
     index = watching != null ? rows.size() - 1 : 0;
+  }
+
+  /** Cameras and, while watching, a close row only. */
+  ChooserModel(List<String> cameras, String watching, String closeLabel) {
+    this(cameras, watching, closeLabel, null, null);
+  }
+
+  private void addAction(String label, Choice choice) {
+    rows.add(label);
+    actions.add(choice);
   }
 
   boolean hasCameras() {
@@ -64,9 +99,15 @@ final class ChooserModel {
     return new int[] {first, first + maxRows};
   }
 
+  /** What choosing the highlighted row does. */
+  Choice choice() {
+    if (rows.isEmpty()) return Choice.NONE;
+    return index < cameraCount ? Choice.CAMERA : actions.get(index - cameraCount);
+  }
+
   /** True when the close row is highlighted. */
   boolean closeSelected() {
-    return index >= cameraCount && !rows.isEmpty();
+    return choice() == Choice.CLOSE;
   }
 
   /** The highlighted camera; null when the close row is highlighted or there are no rows. */

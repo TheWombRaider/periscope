@@ -109,4 +109,34 @@ public class ChooserModelTest {
     assertNull(ChooserModel.cameraSource(null, null));
     assertEquals(Collections.emptyList(), ChooserModel.cameraSource(Collections.emptyList(), grid));
   }
+
+  @Test
+  public void whileWatchingFullScreenIsOneUpFromClose() {
+    ChooserModel m = new ChooserModel(Arrays.asList("front", "garage"), "garage", CLOSE, "Full", "Open");
+    assertEquals(Arrays.asList("front", "garage", "Full", CLOSE), m.rows());
+    assertEquals(ChooserModel.Choice.CLOSE, m.choice());
+    m.move(-1);
+    assertEquals(ChooserModel.Choice.FULL_SCREEN, m.choice());
+    assertNull(m.selectedCamera());
+    m.move(-1);
+    assertEquals(ChooserModel.Choice.CAMERA, m.choice());
+    assertEquals("garage", m.selectedCamera());
+  }
+
+  @Test
+  public void notWatchingOpenTheAppIsOneUpFromTheFirstCamera() {
+    ChooserModel m = new ChooserModel(Arrays.asList("front", "garage"), null, CLOSE, "Full", "Open");
+    assertEquals(Arrays.asList("front", "garage", "Open"), m.rows());
+    assertEquals(ChooserModel.Choice.CAMERA, m.choice());
+    m.move(-1);
+    assertEquals(ChooserModel.Choice.OPEN_APP, m.choice());
+    assertFalse(m.closeSelected());
+  }
+
+  @Test
+  public void withNoCamerasTheAppCanStillBeOpened() {
+    ChooserModel m = new ChooserModel(Collections.emptyList(), null, CLOSE, "Full", "Open");
+    assertFalse(m.hasCameras());
+    assertEquals(ChooserModel.Choice.OPEN_APP, m.choice());
+  }
 }

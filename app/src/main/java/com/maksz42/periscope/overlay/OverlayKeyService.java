@@ -14,7 +14,9 @@ import android.view.accessibility.AccessibilityEvent;
 
 import androidx.annotation.RequiresApi;
 
+import com.maksz42.periscope.MatrixActivity;
 import com.maksz42.periscope.R;
+import com.maksz42.periscope.SingleCameraActivity;
 import com.maksz42.periscope.frigate.Config;
 import com.maksz42.periscope.helper.Settings;
 
@@ -166,11 +168,11 @@ public final class OverlayKeyService extends AccessibilityService {
     List<String> selected = ChooserModel.cameraSource(
         settings.getOverlayCameras(), settings.getSelectedCameras());
     if (selected != null) {
-      showModel(new ChooserModel(selected, camera.camera(), getString(R.string.overlay_close)));
+      showModel(chooserModel(selected));
       return;
     }
     if (cameras != null) {
-      showModel(new ChooserModel(cameras, camera.camera(), getString(R.string.overlay_close)));
+      showModel(chooserModel(cameras));
       return;
     }
     model = null;
@@ -185,7 +187,7 @@ public final class OverlayKeyService extends AccessibilityService {
               false, false);
         } else {
           cameras = found;
-          showModel(new ChooserModel(cameras, camera.camera(), getString(R.string.overlay_close)));
+          showModel(chooserModel(cameras));
         }
       });
     }, "overlay-camera-list").start();
@@ -221,14 +223,51 @@ public final class OverlayKeyService extends AccessibilityService {
   }
 
   @RequiresApi(22)
+  private ChooserModel chooserModel(List<String> cameras) {
+    return new ChooserModel(cameras, camera.camera(), getString(R.string.overlay_close),
+        getString(R.string.overlay_full_screen), getString(R.string.overlay_open_app));
+  }
+
+  @RequiresApi(22)
   private void select() {
     ChooserModel m = model;
     closeChooser();
     if (m == null) return;
-    if (m.closeSelected()) {
-      camera.close();
-    } else if (m.selectedCamera() != null) {
-      camera.open(m.selectedCamera());
+    switch (m.choice()) {
+      case CAMERA:
+        camera.open(m.selectedCamera());
+        break;
+      case CLOSE:
+        camera.close();
+        break;
+      case FULL_SCREEN: {
+        String name = camera.camera();
+        camera.close();
+        openApp(name);
+        break;
+      }
+      case OPEN_APP:
+        openApp(null);
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
+   * Brings up the app over the show: one camera full screen, or the camera grid when
+   * {@code cameraName} is null. Back returns to what was playing.
+   */
+  @RequiresApi(22)
+  private void openApp(String cameraName) {
+    Intent intent = cameraName != null
+        ? new Intent(this, SingleCameraActivity.class).putExtra("camera_name", cameraName)
+        : new Intent(this, MatrixActivity.class);
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    try {
+      startActivity(intent);
+    } catch (RuntimeException e) {
+      Log.w(TAG, "Could not open the app: " + e.getClass().getSimpleName());
     }
   }
 

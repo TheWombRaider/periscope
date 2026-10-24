@@ -55,6 +55,8 @@
     <string name="overlay_service_description">Hold a chosen remote button (Info unless changed in the Periscope settings) to pick a camera. It floats in a corner over whatever is playing. Hold the button again to change or close it. Only that button is watched; while the camera list is open, Up, Down, OK and Back move through it.</string>
     <string name="overlay_title">Watch a camera</string>
     <string name="overlay_close">Close camera</string>
+    <string name="overlay_full_screen">Full screen</string>
+    <string name="overlay_open_app">Open Periscope</string>
     <string name="overlay_loading">Loading cameras</string>
     <string name="overlay_server_unreachable">Camera server not reachable</string>
     <string name="overlay_chooser_hint">OK to choose, Back to cancel</string>

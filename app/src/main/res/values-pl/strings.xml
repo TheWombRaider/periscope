@@ -49,6 +49,8 @@
     <string name="overlay_service_description">Przytrzymaj wybrany przycisk pilota (Info, chyba że zmienisz go w ustawieniach Periscope), aby wybrać kamerę. Obraz pojawi się w rogu nad tym, co oglądasz. Przytrzymaj przycisk ponownie, aby zmienić lub zamknąć kamerę. Usługa reaguje tylko na ten przycisk; gdy lista kamer jest otwarta, klawisze Góra, Dół, OK i Wstecz służą do jej obsługi.</string>
     <string name="overlay_title">Podgląd kamery</string>
     <string name="overlay_close">Zamknij kamerę</string>
+    <string name="overlay_full_screen">Pełny ekran</string>
+    <string name="overlay_open_app">Otwórz Periscope</string>
     <string name="overlay_loading">Wczytywanie kamer</string>
     <string name="overlay_server_unreachable">Serwer kamer nieosiągalny</string>
     <string name="overlay_chooser_hint">OK wybiera, Wstecz anuluje</string>
