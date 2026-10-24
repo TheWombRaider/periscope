@@ -43,12 +43,12 @@ public final class OverlayPlacement {
       this.share = share;
     }
 
-    /** The stored value, or small for anything unknown. */
+    /** The stored value, or large (the default) for anything unknown. */
     public static Size parse(String value) {
       for (Size s : values()) {
         if (s.name().equals(value)) return s;
       }
-      return SMALL;
+      return LARGE;
     }
 
     /**
@@ -76,12 +76,12 @@ public final class OverlayPlacement {
       this.alpha = alpha;
     }
 
-    /** The stored value, or none for anything unknown. */
+    /** The stored value, or low (the default) for anything unknown. */
     public static Transparency parse(String value) {
       for (Transparency t : values()) {
         if (t.name().equals(value)) return t;
       }
-      return NONE;
+      return LOW;
     }
   }
 }

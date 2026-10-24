@@ -166,14 +166,14 @@
             android:key="@string/overlay_size_key"
             android:entries="@array/overlay_size_entries"
             android:entryValues="@array/overlay_size_values"
-            android:defaultValue="SMALL"
+            android:defaultValue="LARGE"
             />
         <ListPreference
             android:title="@string/overlay_transparency"
             android:key="@string/overlay_transparency_key"
             android:entries="@array/overlay_transparency_entries"
             android:entryValues="@array/overlay_transparency_values"
-            android:defaultValue="NONE"
+            android:defaultValue="LOW"
             />
     </PreferenceScreen>
     <Preference

@@ -14,9 +14,9 @@ public class OverlayPlacementTest {
     assertEquals(OverlayPlacement.Corner.TOP_RIGHT, OverlayPlacement.Corner.parse(null));
     assertEquals(OverlayPlacement.Corner.TOP_RIGHT, OverlayPlacement.Corner.parse("middle"));
     assertEquals(OverlayPlacement.Size.LARGE, OverlayPlacement.Size.parse("LARGE"));
-    assertEquals(OverlayPlacement.Size.SMALL, OverlayPlacement.Size.parse(null));
+    assertEquals(OverlayPlacement.Size.LARGE, OverlayPlacement.Size.parse(null));
     assertEquals(OverlayPlacement.Transparency.HIGH, OverlayPlacement.Transparency.parse("HIGH"));
-    assertEquals(OverlayPlacement.Transparency.NONE, OverlayPlacement.Transparency.parse("clear"));
+    assertEquals(OverlayPlacement.Transparency.LOW, OverlayPlacement.Transparency.parse("clear"));
   }
 
   @Test
